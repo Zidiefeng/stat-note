@@ -1,0 +1,26 @@
+# Confidence Intervals{#conf-int}
+
+## Chapter Summary
+
+```{r chap2-summary-fig, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Chapter Summary', out.width='80%'}
+knitr::include_graphics('graphs/2-1.JPG')
+knitr::include_graphics('graphs/2-2.JPG')
+```
+
+## Confidence Interval
+
+当我们希望对一个population的parameter（如mean）做出预测的时候, 通过预测这个parameter是否在一个range之中的方式更好（而不是point estimate）
+
+```{r fig2-1, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Confidence interval', out.width='80%'}
+knitr::include_graphics('graphs/2-3.png')
+```
+
+## Margin of Error
+
+margin of error = standard error
+```{r fig2-4, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Margin of error', out.width='80%'}
+knitr::include_graphics('graphs/2-3.png')
+```
+
+
+
