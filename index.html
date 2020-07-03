@@ -1,32 +1,236 @@
-{% macro form_errors(form, hiddens=True) %} {%- if form.errors %} {%- for fieldname, errors in form.errors.items() %} {%- if bootstrap_is_hidden_field(form[fieldname]) and hiddens or not bootstrap_is_hidden_field(form[fieldname]) and hiddens != 'only' %} {%- for error in errors %}
-{{error}}
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
 
-{%- endfor %} {%- endif %} {%- endfor %} {%- endif %} {%- endmacro %} {% macro _hz_form_wrap(horizontal_columns, form_type, add_group=False, required=False) %} {% if form_type == "horizontal" %} {% if add_group %}
-{% endif %}
-{% endif %} {{caller()}} {% if form_type == "horizontal" %} {% if add_group %}
-{% endif %}
-{% endif %} {% endmacro %} {% macro form_field(field, form_type="basic", horizontal_columns=('lg', 2, 10), button_map={}) %} {# this is a workaround hack for the more straightforward-code of just passing required=required parameter. older versions of wtforms do not have the necessary fix for required=False attributes, but will also not set the required flag in the first place. we skirt the issue using the code below #} {% if field.flags.required and not required in kwargs %} {% set kwargs = dict(required=True, **kwargs) %} {% endif %} {% if field.widget.input_type == 'checkbox' %} {% call _hz_form_wrap(horizontal_columns, form_type, True, required=required) %}
-{{field()|safe}} {{field.label.text|safe}}
-{% endcall %} {%- elif field.type == 'RadioField' -%} {# note: A cleaner solution would be rendering depending on the widget, this is just a hack for now, until I can think of something better #} {% call _hz_form_wrap(horizontal_columns, form_type, True, required=required) %} {% for item in field -%}
-{{item|safe}} {{item.label.text|safe}}
-{% endfor %} {% endcall %} {%- elif field.type == 'SubmitField' -%} {# deal with jinja scoping issues? #} {% set field_kwargs = kwargs %} {# note: same issue as above - should check widget, not field type #} {% call _hz_form_wrap(horizontal_columns, form_type, True, required=required) %} {{field(class='btn btn-%s' % button_map.get(field.name, 'default'), **field_kwargs)}} {% endcall %} {%- elif field.type == 'FormField' -%} {# note: FormFields are tricky to get right and complex setups requiring these are probably beyond the scope of what this macro tries to do. the code below ensures that things don't break horribly if we run into one, but does not try too hard to get things pretty. #}{{field.label}}
-{%- for subfield in field %} {% if not bootstrap_is_hidden_field(subfield) -%} {{ form_field(subfield, form_type=form_type, horizontal_columns=horizontal_columns, button_map=button_map) }} {%- endif %} {%- endfor %}
-{% else -%}
-{%- if form_type == "inline" %} {{field.label(class="sr-only")|safe}} {% if field.type == 'FileField' %} {{field(**kwargs)|safe}} {% else %} {{field(class="form-control", **kwargs)|safe}} {% endif %} {% elif form_type == "horizontal" %} {{field.label(class="control-label " + ( " col-%s-%s" % horizontal_columns[0:2] ))|safe}}
-{% if field.type == 'FileField' %} {{field(**kwargs)|safe}} {% else %} {{field(class="form-control", **kwargs)|safe}} {% endif %}
-{%- if field.errors %} {%- for error in field.errors %} {% call _hz_form_wrap(horizontal_columns, form_type, required=required) %}
-{{error}}
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>A Minimal Book Example</title>
+  <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-{% endcall %} {%- endfor %} {%- elif field.description -%} {% call _hz_form_wrap(horizontal_columns, form_type, required=required) %}
-{{field.description|safe}}
+  <meta property="og:title" content="A Minimal Book Example" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  <meta name="github-repo" content="rstudio/bookdown-demo" />
 
-{% endcall %} {%- endif %} {%- else -%} {{field.label(class="control-label")|safe}} {% if field.type == 'FileField' %} {{field(**kwargs)|safe}} {% else %} {{field(class="form-control", **kwargs)|safe}} {% endif %} {%- if field.errors %} {%- for error in field.errors %}
-{{error}}
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="A Minimal Book Example" />
+  
+  <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
+  
 
-{%- endfor %} {%- elif field.description -%}
-{{field.description|safe}}
+<meta name="author" content="Yihui Xie" />
 
-{%- endif %} {%- endif %}
-{% endif %} {% endmacro %} {# valid form types are "basic", "inline" and "horizontal" #} {% macro quick_form(form, action="", method="post", extra_classes=None, role="form", form_type="basic", horizontal_columns=('lg', 2, 10), enctype=None, button_map={}, id="", novalidate=False) %} {#- action="" is what we want, from http://www.ietf.org/rfc/rfc2396.txt: 4.2. Same-document References A URI reference that does not contain a URI is a reference to the current document. In other words, an empty URI reference within a document is interpreted as a reference to the start of that document, and a reference containing only a fragment identifier is a reference to the identified fragment of that document. Traversal of such a reference should not result in an additional retrieval action. However, if the URI reference occurs in a context that is always intended to result in a new request, as in the case of HTML's FORM element, then an empty URI reference represents the base URI of the current document and should be replaced by that URI when transformed into a request. -#} {#- if any file fields are inside the form and enctype is automatic, adjust if file fields are found. could really use the equalto test of jinja2 here, but latter is not available until 2.8 warning: the code below is guaranteed to make you cry =( #} {%- set _enctype = [] %} {%- if enctype is none -%} {%- for field in form %} {%- if field.type == 'FileField' %} {#- for loops come with a fairly watertight scope, so this list-hack is used to be able to set values outside of it #} {%- set _ = _enctype.append('multipart/form-data') -%} {%- endif %} {%- endfor %} {%- else %} {% set _ = _enctype.append(enctype) %} {%- endif %}
-{{ form.hidden_tag() }} {{ form_errors(form, hiddens='only') }} {%- for field in form %} {% if not bootstrap_is_hidden_field(field) -%} {{ form_field(field, form_type=form_type, horizontal_columns=horizontal_columns, button_map=button_map) }} {%- endif %} {%- endfor %}
-{%- endmacro %}
+
+<meta name="date" content="2020-07-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="clt.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">A Minimal Book Example</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Prerequisites</a></li>
+<li class="chapter" data-level="2" data-path="clt.html"><a href="clt.html"><i class="fa fa-check"></i><b>2</b> Central Limit Theorem(CLT) and Sampling</a><ul>
+<li class="chapter" data-level="2.1" data-path="clt.html"><a href="clt.html#chapter-summary"><i class="fa fa-check"></i><b>2.1</b> Chapter Summary</a></li>
+<li class="chapter" data-level="2.2" data-path="clt.html"><a href="clt.html#sampling-distribution-与-sampling-distribution"><i class="fa fa-check"></i><b>2.2</b> Sampling Distribution 与 Sampling Distribution</a></li>
+<li class="chapter" data-level="2.3" data-path="clt.html"><a href="clt.html#standard-error"><i class="fa fa-check"></i><b>2.3</b> Standard Error</a></li>
+<li class="chapter" data-level="2.4" data-path="clt.html"><a href="clt.html#central-limit-theoremclt"><i class="fa fa-check"></i><b>2.4</b> Central Limit Theorem(CLT)</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="conf-int.html"><a href="conf-int.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="clt.html"><a href="clt.html#chapter-summary"><i class="fa fa-check"></i><b>3.1</b> Chapter Summary</a></li>
+<li class="chapter" data-level="3.2" data-path="conf-int.html"><a href="conf-int.html#confidence-interval"><i class="fa fa-check"></i><b>3.2</b> Confidence Interval</a></li>
+<li class="chapter" data-level="3.3" data-path="conf-int.html"><a href="conf-int.html#margin-of-error"><i class="fa fa-check"></i><b>3.3</b> Margin of Error</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>4</b> Methods</a></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">A Minimal Book Example</h1>
+<p class="author"><em>Yihui Xie</em></p>
+<p class="date"><em>2020-07-02</em></p>
+</div>
+<div id="prerequisites" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Prerequisites</h1>
+<p>This is a <em>sample</em> book written in <strong>Markdown</strong>. You can use anything that Pandoc's Markdown supports, e.g., a math equation <span class="math inline">\(a^2 + b^2 = c^2\)</span>.</p>
+<p>The <strong>bookdown</strong> package can be installed from CRAN or Github:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;bookdown&quot;</span>)
+<span class="co"># or the development version</span>
+<span class="co"># devtools::install_github(&quot;rstudio/bookdown&quot;)</span></code></pre></div>
+<p>Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading <code>#</code>.</p>
+<p>To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <a href="https://yihui.name/tinytex/" class="uri">https://yihui.name/tinytex/</a>.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="clt.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["bookdown-demo.pdf", "bookdown-demo.epub"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "";
+    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
