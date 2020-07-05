@@ -116,8 +116,162 @@ knitr::include_graphics('graphs/2-10.png')
 ```
 
 
-如何 同时增加precision（缩小range） 和 accuracy ： **增加sample size**
+- 如何 同时增加precision（缩小range） 和 accuracy ： **增加sample size**
 
 因为sample size变大，standard error变小，从而保证interval的width不会太宽，precision就不会因为accuracy上升而下降太多
+
+
+- 例题：
+
+针对1154 美国居民调查，95% confidence interval for the average 娱乐时间是3.53-3.73小时
+
+```{r fig2-11, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Example 2', out.width='80%'}
+knitr::include_graphics('graphs/2-11.png')
+```
+
+- A 不对是因为没有提到是基于sample中的结果，confidence interval并不是关于population中的individual的，而是关于the true population parameter (如population mean)的
+- B就很好，解释了有95%的Confidence interval认为包含true population mean
+- C错是在于，true population parameter是一个定值，不是一个会一会在interval一会不在interval的moving target
+- D(最容易选错)错在，confidence interval不是关于sample mean的，而是关于population mean；除此之外，这个选项说有95%的confidence认为sample mean在3.53到3.83之间，但其实应该是100%，因为条件中表明了confidence level是这两个数，表明这两个数是sample mean的distribution的一部分，即这两个数一定是在这个区间内的。因此错
+
+
+## Required sample size for margin of error
+
+据以下条件，我们可以算得desired margin of error 所需要的sample size:
+
+- target margin of error
+- confidence level
+- variability of the sample/population
+
+其他条件不变的情况下，sample size越大，margin of error越小
+
+```{r fig2-12, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='A given ME', out.width='80%'}
+knitr::include_graphics('graphs/2-12.png')
+```
+
+## Exercises
+
+
+- 例题(1)
+
+三岁小孩的IQ的SD：18分
+
+问: sample要多大才能obtain 90% confidence interval with a margin of error <= 4 points?
+
+代入公式: z* 18/sqrt(n)  = 4
+
+```{r fig2-13, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Exercise 1', out.width='80%'}
+knitr::include_graphics('graphs/2-13.png')
+```
+
+答： at least 55 samples
+```{r cal-ex1}
+# 5%-95%
+(z <-  qnorm(1-0.05))
+(z*18/4)**2
+```
+
+- 例题(2)
+
+那如果我们要将margin of error降至2分，要如何变动sample size?
+
+
+ME=z*sd/sqrt(n)
+
+当ME下降一倍，sqrt(n)增加一倍，n增加四倍
+
+```{r fig2-14, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Exercise 2', out.width='80%'}
+knitr::include_graphics('graphs/2-14.png')
+```
+
+- 类似，问：如果让interval 下降为1/3，要如何调整n？
+
+答：interval的大小其实就是2倍的margin of error(ME), 让ME为1/3，即要求sqrt(n)增加3倍，那么n就要增加9倍
+
+```{r fig2-15, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Exercise 3', out.width='80%'}
+knitr::include_graphics('graphs/2-15.png')
+```
+
+
+- 例题 3
+
+基于1151人数据，人们在过去30天中，会有95% confidence interval of 3.40-4.24天感觉不开心
+
+问：如何解释这里的interval
+
+（答案如下）
+
+```{r fig2-16, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Exercise 3', out.width='80%'}
+knitr::include_graphics('graphs/2-16.png')
+```
+
+
+- confidence interval (CI)== point estimate +- margin of error
+- CI 是关于 unknown population mean的
+- CI (95%), tells us how confident we are, **that this particular interval captures that mean**
+
+
+- 例题4
+
+50个sample学生显示，sample mean是3.2个亲密关系的人，SD是1.74个，这里的sample dist有点skewed to the right
+
+问：estimate true average based on this sample using 95% CI
+
+答： 
+
+我们可以用CLT：
+
+- 这里因为sample数（50）>30 且 只是slightly skewed,可以assume the sampling distribution of average number 是nearly normal
+- 50学生，我们假设>10%,所以符合independent
+- sample是random selected
+
+ME = z*SD/sqrt(n)
+
+```{r cal-ex4}
+# 2.5%-97.5%
+sd=1.74
+n=50
+z=qnorm(1-0.025)
+sample_mean=3.2
+(ME <- z*sd/(n**(1/2)))
+print(paste("confidence interval:",sample_mean-ME,"~",sample_mean+ME))
+
+```
+
+
+```{r fig2-17, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Exercise 4', out.width='80%'}
+knitr::include_graphics('graphs/2-17.png')
+knitr::include_graphics('graphs/2-18.png')
+```
+
+- 例题5
+
+random sample: 100 runners, 跑完10mile的平均速度是95 min，95% CI是92min-98min，问下面哪个不对：
+
+注意下面2中正确的说法应该是：
+
+> CI: we are XX% confident that the true population parameter is in this interval
+
+```{r fig2-19, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Exercise 5', out.width='80%'}
+knitr::include_graphics('graphs/2-19.png')
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

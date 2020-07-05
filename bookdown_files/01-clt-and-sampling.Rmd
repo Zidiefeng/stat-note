@@ -1,5 +1,6 @@
 # Central Limit Theorem(CLT) and Sampling {#clt}
 
+
 ## Chapter Summary
 
 ```{r chap1-summary-fig, echo=FALSE, fig.align='center', fig.asp=.75, fig.cap='Chapter Summary', out.width='80%'}

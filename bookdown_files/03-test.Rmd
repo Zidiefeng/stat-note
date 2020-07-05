@@ -7,4 +7,12 @@ knitr::include_graphics('graphs/3-1.JPG')
 knitr::include_graphics('graphs/3-2.JPG')
 ```
 
+只能reject null,不能accept null：
+、
+- 这里的结论是reject null hypothesis 即没有足够的证据证明不一样
+- 结论只能说可以reject 或者not reject null hypothesis，而永远不能说accept null hypothesis
+- 因为你真正关心的其实是alternative hypothesis
+
+
+
 
