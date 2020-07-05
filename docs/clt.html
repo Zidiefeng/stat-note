@@ -4,35 +4,35 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 4 Confidence Intervals | A Minimal Book Example</title>
+  <title>Chapter 2 Central Limit Theorem(CLT) and Sampling | Inferential Statistics Notes</title>
   <meta name="description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 4 Confidence Intervals | A Minimal Book Example" />
+  <meta property="og:title" content="Chapter 2 Central Limit Theorem(CLT) and Sampling | Inferential Statistics Notes" />
   <meta property="og:type" content="book" />
   
   
   <meta property="og:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 4 Confidence Intervals | A Minimal Book Example" />
+  <meta name="twitter:title" content="Chapter 2 Central Limit Theorem(CLT) and Sampling | Inferential Statistics Notes" />
   
   <meta name="twitter:description" content="This is a minimal example of using the bookdown package to write a book. The output format for this example is bookdown::gitbook." />
   
 
-<meta name="author" content="Yihui Xie" />
+<meta name="author" content="KS" />
 
 
-<meta name="date" content="2020-07-02" />
+<meta name="date" content="2020-07-04" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="intro.html"/>
-<link rel="next" href="literature.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="conf-int.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -52,43 +52,6 @@
 
 
 
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-</style>
 
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -113,17 +76,23 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="2.3" data-path="clt.html"><a href="clt.html#standard-error"><i class="fa fa-check"></i><b>2.3</b> Standard Error</a></li>
 <li class="chapter" data-level="2.4" data-path="clt.html"><a href="clt.html#central-limit-theoremclt"><i class="fa fa-check"></i><b>2.4</b> Central Limit Theorem(CLT)</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>3</b> Introduction</a></li>
-<li class="chapter" data-level="4" data-path="clt.html"><a href="clt.html#clt"><i class="fa fa-check"></i><b>4</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3" data-path="conf-int.html"><a href="conf-int.html"><i class="fa fa-check"></i><b>3</b> Confidence Intervals</a><ul>
+<li class="chapter" data-level="3.1" data-path="clt.html"><a href="clt.html#chapter-summary"><i class="fa fa-check"></i><b>3.1</b> Chapter Summary</a></li>
+<li class="chapter" data-level="3.2" data-path="conf-int.html"><a href="conf-int.html#interval-estimate"><i class="fa fa-check"></i><b>3.2</b> Interval Estimate</a></li>
+<li class="chapter" data-level="3.3" data-path="conf-int.html"><a href="conf-int.html#margin-of-error"><i class="fa fa-check"></i><b>3.3</b> Margin of Error</a></li>
+<li class="chapter" data-level="3.4" data-path="conf-int.html"><a href="conf-int.html#confidential-interval"><i class="fa fa-check"></i><b>3.4</b> Confidential Interval</a></li>
+<li class="chapter" data-level="3.5" data-path="conf-int.html"><a href="conf-int.html#confidence-level"><i class="fa fa-check"></i><b>3.5</b> Confidence Level</a></li>
+<li class="chapter" data-level="3.6" data-path="conf-int.html"><a href="conf-int.html#required-sample-size-for-margin-of-error"><i class="fa fa-check"></i><b>3.6</b> Required sample size for margin of error</a></li>
+<li class="chapter" data-level="3.7" data-path="conf-int.html"><a href="conf-int.html#exercises"><i class="fa fa-check"></i><b>3.7</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="test.html"><a href="test.html"><i class="fa fa-check"></i><b>4</b> Hypothesis Testing</a><ul>
 <li class="chapter" data-level="4.1" data-path="clt.html"><a href="clt.html#chapter-summary"><i class="fa fa-check"></i><b>4.1</b> Chapter Summary</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="literature.html"><a href="literature.html"><i class="fa fa-check"></i><b>5</b> Literature</a></li>
-<li class="chapter" data-level="6" data-path="methods.html"><a href="methods.html"><i class="fa fa-check"></i><b>6</b> Methods</a></li>
-<li class="chapter" data-level="7" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>7</b> Applications</a><ul>
-<li class="chapter" data-level="7.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>7.1</b> Example one</a></li>
-<li class="chapter" data-level="7.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>7.2</b> Example two</a></li>
+<li class="chapter" data-level="5" data-path="applications.html"><a href="applications.html"><i class="fa fa-check"></i><b>5</b> Applications</a><ul>
+<li class="chapter" data-level="5.1" data-path="applications.html"><a href="applications.html#example-one"><i class="fa fa-check"></i><b>5.1</b> Example one</a></li>
+<li class="chapter" data-level="5.2" data-path="applications.html"><a href="applications.html#example-two"><i class="fa fa-check"></i><b>5.2</b> Example two</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>8</b> Final Words</a></li>
+<li class="chapter" data-level="6" data-path="final-words.html"><a href="final-words.html"><i class="fa fa-check"></i><b>6</b> Final Words</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -137,7 +106,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Inferential Statistics Notes</a>
           </h1>
         </div>
 
@@ -146,21 +115,150 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
             <section class="normal" id="section-">
 <div id="clt" class="section level1">
-<h1><span class="header-section-number">Chapter 4</span> Confidence Intervals</h1>
+<h1><span class="header-section-number">Chapter 2</span> Central Limit Theorem(CLT) and Sampling</h1>
 <div id="chapter-summary" class="section level2">
-<h2><span class="header-section-number">4.1</span> Chapter Summary</h2>
-<div class="figure" style="text-align: center"><span id="fig:chap2-summary-fig1"></span>
-<img src="graphs/2-1.JPG" alt="Chapter Summary" width="80%" />
+<h2><span class="header-section-number">2.1</span> Chapter Summary</h2>
+<div class="figure" style="text-align: center"><span id="fig:chap1-summary-fig"></span>
+<img src="graphs/1-1.JPG" alt="Chapter Summary" width="80%" />
 <p class="caption">
-Figure 4.1: Chapter Summary
+Figure 2.1: Chapter Summary
 </p>
 </div>
-<div class="figure" style="text-align: center"><span id="fig:chap2-summary-fig2"></span>
-<img src="graphs/2-2.JPG" alt="Chapter Summary" width="80%" />
+<p>由于通常不太可能直接获得population parameter（如全国所有人身高的平均值）因此通常使用sample statistics/point estimates来约等于或者估算population parameter</p>
+<p>在这个例子中，也可以观察到在计算sample statistics时，每一组sample的平均值都不太一样，之后要计算这些平均值的standard deviation</p>
+<div class="figure" style="text-align: center"><span id="fig:fig1"></span>
+<img src="graphs/1-2.png" alt="Introduction" width="80%" />
 <p class="caption">
-Figure 4.2: Chapter Summary
+Figure 2.2: Introduction
 </p>
 </div>
+</div>
+<div id="sampling-distribution-与-sampling-distribution" class="section level2">
+<h2><span class="header-section-number">2.2</span> Sampling Distribution 与 Sampling Distribution</h2>
+<p>Sample distribution 和sampling distribution看上去相似但不是同一个意思；</p>
+<p>Sample distribution:</p>
+<ul>
+<li>Sample distribution是The distributions of the observations with in each sample</li>
+<li>sample distribution的observation是individual（比如说people/case）</li>
+</ul>
+<p>Sampling distribution:</p>
+<ul>
+<li>Sampling distribution是the distribution of the sample statistics</li>
+<li>sampling distribution的observation是sampled statistics</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:fig3"></span>
+<img src="graphs/1-3.png" alt="Sampling vs. sample distribution" width="80%" />
+<p class="caption">
+Figure 2.3: Sampling vs. sample distribution
+</p>
+</div>
+</div>
+<div id="standard-error" class="section level2">
+<h2><span class="header-section-number">2.3</span> Standard Error</h2>
+<p>这里在计算全美的平均身高时:</p>
+<ul>
+<li>μ代表population mean</li>
+<li>σ代表population standard deviation</li>
+</ul>
+<p>但其实每个state的standard deviation会比population的SD要低的（因为人口基数的不同有的state可能人都高，SD小，但整体全国就会包含个子高的state和个子矮的state，因此SD一定会更高一些-?）</p>
+<p>Standard error： the standard deviation of sample mean</p>
+<ul>
+<li>N（这里的N表示sample size）越大，Standard error越小</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:fig4"></span>
+<img src="graphs/1-4.png" alt="Standard error" width="80%" />
+<p class="caption">
+Figure 2.4: Standard error
+</p>
+</div>
+</div>
+<div id="central-limit-theoremclt" class="section level2">
+<h2><span class="header-section-number">2.4</span> Central Limit Theorem(CLT)</h2>
+<p><strong>定义</strong></p>
+<p>sample statistics（如每个sample的mean）的分布应该是正态分布，以population mean作为中心，并以population SD/根号下sample size作为SE</p>
+<p>正常来说应该用population 的SD除根号下sample size，但通常不太能获取population SD，所以也一般用sample SD来估计population SD，但这里的sample SD指的是每次取得的单个sample而不是所有sample之和</p>
+<p><strong>条件</strong></p>
+<ol style="list-style-type: decimal">
+<li>所有的sample选取要保证互相独立</li>
+</ol>
+<ul>
+<li>可以是random sample/assignment</li>
+<li>如果是无replacement 的取样，应该保证sample size N要小于10%的population（也就是说这种情况下 sample size要小一点会好一些，保证sample之间可以相互独立，size太大的话容易收集到具有相似属性的人，如兄弟姐妹家庭等，导致不够independent）</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li>要保证原本整体的population要不然是正态分布，要不然population是skewed并且sample size是足够大的（即sample size大于30）</li>
+</ol>
+<ul>
+<li>如果population 不是normal distribution，那么population 越skewed，需要的sample size就要越大</li>
+<li>如果population是highly right skewed, 选取的sample size又很少，那么sample mean的distribution也会是right skewed，只有sample size大到一定程度，才能变成normalization</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:fig5"></span>
+<img src="graphs/1-5.png" alt="Standard error" width="80%" />
+<p class="caption">
+Figure 2.5: Standard error
+</p>
+</div>
+<p><strong>Exercise</strong></p>
+<ul>
+<li>用于直接visualize各种distribution的<a href="https://gallery.shinyapps.io/CLT_mean/">website</a></li>
+<li>例题1：</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:fig6"></span>
+<img src="graphs/1-6.png" alt="Ex 1" width="80%" />
+<p class="caption">
+Figure 2.6: Ex 1
+</p>
+</div>
+<ul>
+<li>例题2：</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:fig7"></span>
+<img src="graphs/1-7.png" alt="Ex 2" width="80%" />
+<p class="caption">
+Figure 2.7: Ex 2
+</p>
+</div>
+<p>这里并不能直接用Z-score 来计算length大于5的歌曲的概率，因为只有在population distribution为normal distribution的时候才可以这么计算。</p>
+<p>这里的分布是right skewed，因此可以利用histogram 来粗略估计，从而得到0.17的概率。</p>
+<ul>
+<li>例题3：</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:fig81"></span>
+<img src="graphs/1-8.png" alt="Ex 2" width="80%" />
+<p class="caption">
+Figure 2.8: Ex 2
+</p>
+</div>
+<div class="figure" style="text-align: center"><span id="fig:fig82"></span>
+<img src="graphs/1-9.png" alt="Ex 2" width="80%" />
+<p class="caption">
+Figure 2.9: Ex 2
+</p>
+</div>
+<p>在这个情况下，要计算probability的时候，我们不是要求每首歌都长于3.6min，而是要求这100首歌的总时长大于360mins，即sample mean of those 100 songs &gt; 3.6.</p>
+<p>基于CLT，可以知道这些歌的sample mean会是normal分布， 因此可以计算z-score。</p>
+<ul>
+<li>这里计算Z的时候要除以standard deviation of sample mean(即SE, 0.163), 而不是population SD(1.63)，因为这里讨论的对象并不是单首歌的时长，而是平均每首歌的sample mean, 因此要用SE。</li>
+<li>最后用table或者各种方法，找到对应z-score为0.92的probability，即0.179</li>
+</ul>
+<blockquote>
+<p>Both in a population and in one, one sample, the observations are still individual observations, so not sample means. (?)</p>
+</blockquote>
+<p>即如果将一个sample组中的所有数据拿出来，这样还是会体现出原本population的分布情况，而不是sample mean的分布情况。</p>
+<ul>
+<li>例题4：</li>
+</ul>
+<div class="figure" style="text-align: center"><span id="fig:fig10"></span>
+<img src="graphs/1-10.png" alt="Ex 3" width="80%" />
+<p class="caption">
+Figure 2.10: Ex 3
+</p>
+</div>
+<ul>
+<li>这里可以先选出选项4对应plot C，因为选项4可以判断，由于本身population是right-skewed，因此当sample size足够大的时候，sample mean应该是normal distribution</li>
+<li>在剩下的两个中，由于选项2描述的a single random sample of 100 observations, 即一组sample的数据，其本质还是population的分布，所以仍然会显示right-skewed</li>
+<li>而选项3描述的是一个sample size比较小的sample mean的distribution，因此会显示出一些normal distribution的样子，但也会显示一些right-skewed的样子</li>
+</ul>
 
 </div>
 </div>
@@ -169,8 +267,8 @@ Figure 4.2: Chapter Summary
           </div>
         </div>
       </div>
-<a href="intro.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="literature.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conf-int.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -201,7 +299,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/02-conf-interval.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/01-clt-and-sampling.Rmd",
 "text": "Edit"
 },
 "history": {
